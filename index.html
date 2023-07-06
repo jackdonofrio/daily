@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="https://archives.bulbagarden.net/media/upload/2/22/Oak_I_OD.png">
+    <link rel="canonical" href="https://getbootstrap.com/docs/3.3/examples/blog/">
+
+    <title>Daily Reader</title>
+
+    <!-- jq -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+  <!-- custom template styles -->
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+  </head>
+
+  <body>
+  	<div class="container">
+      <nav class="navbar navbar-default">
+        <div class="container-fluid">
+          <div class="navbar-header">
+            <a class="navbar-brand" href="index.html">Daily Reader</a>
+          </div>
+          <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="https://github.com/PYR0M4NC3R/oak-challenge">Contribute</a></li> 
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+    <main role="main" class="container">
+      <div class="row">
+      	<h1>Daily Reader</h1>
+          <p class="text-muted">Practice your Greek and Latin with the Daily Mass Readings!</p>
+          <hr>
+        <div class="col-md-6">
+          <h3 id="first_reading_header">First Reading: </h3>
+          <h5 class="text-muted">Septuagint readings are supported for most passages, though I have to clean a lot of the data still before it can be fully covered.</h5>
+          <p id="first_reading_body"></p>
+
+          <h3 id="psalm_header"></h3>
+          <h5 class="text-muted">Note: Psalm numbering is currently not set up to match NABRE numbering to Vulgate's, so on some days the Psalm will be wrong until I fix it.</h5>
+          <p id="psalm_body"></p>
+
+          <h3 id="second_reading_header"></h3>
+          <p id="second_reading_body"></p>
+
+          <h3 id="gospel_header">Gospel: </h3>
+          <p id="gospel_body"></p>
+	     </div>
+	     <div class="col-md-6">
+	     	<h3>Vocab Helper</h3>
+	     	<h4 class="text-muted">Coming Soon!</h4>
+	     </div>
+	    </div>
+          
+
+    </main>
+
+
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/vul.json"></script>
+    <script src="js/grb.json"></script>
+    <script src="js/index.js"></script>
+  </body>
+</html>
