@@ -201,6 +201,7 @@ function generate_reading(reading_id, source, translation)
   var reading = '';
 
   var result = '';
+
   for (range of verse_numbers.split(','))
   {
     var colon_index = range.indexOf(':');
@@ -221,13 +222,13 @@ function generate_reading(reading_id, source, translation)
     }
     for (var v = parseInt(start_verse); v <= parseInt(end_verse); v++) {
       result += ' <b>' + v + '</b> ' + bible_json[book_name][chapter][v]
-    }
-    var element = 'first_reading_body';
-    if (reading_id == 'G') element = 'gospel_body';
-    else if (reading_id == 'Ps') element = 'psalm_body';
-    else if (reading_id == 'R2') element = 'second_reading_body';
-    document.getElementById(element).innerHTML += result;
+    } 
   }
+  var element = 'first_reading_body';
+  if (reading_id == 'G') element = 'gospel_body';
+  else if (reading_id == 'Ps') element = 'psalm_body';
+  else if (reading_id == 'R2') element = 'second_reading_body';
+  document.getElementById(element).innerHTML += result;
 }
 
 
