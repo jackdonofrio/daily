@@ -257,7 +257,7 @@ function generate_reading(reading_id, source, translation)
 
 async function update_vocab_tool(word, translation) {
   var lang = translation == 'vul' ? 'la' : 'greek';
-  var url = "http://www.perseus.tufts.edu/hopper/morph";
+  var url = "https://www.perseus.tufts.edu/hopper/morph";
   url += '?l=' + word.toLowerCase();
   url += '&la=' + lang;
   var result = await fetch(url)
