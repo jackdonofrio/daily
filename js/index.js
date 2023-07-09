@@ -132,6 +132,11 @@ function strip(string)
   return string.replace(/\s/g, '');
 }
 
+function isInt(value) {
+  var x = parseFloat(value);
+  return !isNaN(value) && (x | 0) === x;
+}
+
 /************************************\
  checks if letter is digit
 /***********************************/
@@ -180,13 +185,18 @@ function generate_reading(reading_id, source, translation)
   {
     source = source.substring(0, source.indexOf('('))
       + source.substring(source.indexOf(')') + 1);
-  } 
-  var bible_json = translation == 'vul' ? vulgate : greek;
+  }
   var book_verses = extract_book_verses(source);
   var book_name = book_verses[0];
-  if (translation == 'vul')
-  {
+  var bible_json;
+  if (translation == 'vul') {
+    bible_json = vulgate;
     book_name = latinize_name(book_name);
+  } else if (translation == 'grk') {
+    bible_json = greek;
+  } else {
+    console.log('error, unrecognized translation', translation);
+    return;
   }
 
   var verse_numbers = book_verses[1];
@@ -221,7 +231,19 @@ function generate_reading(reading_id, source, translation)
       end_verse = start_verse;
     }
     for (var v = parseInt(start_verse); v <= parseInt(end_verse); v++) {
-      result += ' <b>' + v + '</b> ' + bible_json[book_name][chapter][v]
+      if (!(v in bible_json[book_name][chapter])) {
+        continue;
+      }
+      var text = bible_json[book_name][chapter][v];
+      text = text.replace(/[\p{L}\p{S}\p{M}]+/gu,
+        function(a, b){
+          return '<div class="' + translation + '_word" onclick="update_vocab_tool(\'' 
+            + a + '\', ' + '\'' + translation + '\'' +
+            ')" >' + a + '</div>';
+        });
+      
+      result += ' <b>' + v + '</b> ' + text;
+
     } 
   }
   var element = 'first_reading_body';
@@ -231,6 +253,32 @@ function generate_reading(reading_id, source, translation)
   document.getElementById(element).innerHTML += result;
 }
 
+
+
+async function update_vocab_tool(word, translation) {
+  var lang = translation == 'vul' ? 'la' : 'greek';
+  var url = "http://www.perseus.tufts.edu/hopper/morph";
+  url += '?l=' + word.toLowerCase();
+  url += '&la=' + lang;
+  var result = await fetch(url)
+    .then(response => response.text());
+  result = result.replace(/<img.*>/g, "");
+  var main = $(result).find('#main_col').get(0);
+  $(main).find('p').remove();
+
+  var x = $(main).find('td.' + lang);
+
+  for (var t in x) {
+    if (!isInt(t)) {
+      break;
+    }
+    x.get(t).innerHTML += '&nbsp&nbsp';
+
+  }
+
+  document.getElementById('vocab_tool').innerHTML = main.innerHTML;
+
+}
 
 
 /*****************************************\

@@ -7,6 +7,44 @@ p {
   font-size: 18px;
   font-family: Georgia;
 }
+
+.la, .greek {
+  font-weight: bold;
+}
+
+#sticky-sidebar{ 
+  position: sticky; top: 0;
+}
+
+
+/*.fixed:
+{
+  position: fixed;
+  top:20px;
+}
+*/
+
+.vul_word {
+  display:inline;
+
+}
+
+.vul_word:hover {
+  color: red;
+  cursor: pointer;
+}
+
+
+
+.grk_word {
+  display:inline;
+}
+
+.grk_word:hover {
+  color: blue;
+  cursor: pointer;
+}
+
 /*main {
   font-family: "Georgia";
 }*/
