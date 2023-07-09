@@ -275,7 +275,7 @@ $(document).ready(function(){
         "Second Reading: <i>" + second_reading_src + "</i>";
         generate_reading('R2', second_reading_src, 'vul');
         document.getElementById("second_reading_body").innerHTML += '<hr>';
-        generate_reading('R2', gospel_src, 'grk');
+        generate_reading('R2', second_reading_src, 'grk');
        }
        var gospel_src = raw['Mass_G']['source'];
        document.getElementById("gospel_header").innerHTML += 
@@ -283,7 +283,12 @@ $(document).ready(function(){
 
        generate_reading('R1', first_reading_src, 'vul');
        document.getElementById("first_reading_body").innerHTML += '<hr>';
-       generate_reading('R1', first_reading_src, 'grk');
+       try {
+        generate_reading('R1', first_reading_src, 'grk');
+       }
+       catch (error) {
+        console.log("could not generate septuagint for", first_reading_src);
+       }
        generate_reading('Ps', psalm_src, 'vul');
        generate_reading('G', gospel_src, 'vul');
        document.getElementById("gospel_body").innerHTML += '<hr>';
