@@ -283,7 +283,8 @@ async function update_vocab_tool(word, translation) {
   if (strip(main.innerHTML).length == 0) {
     document.getElementById('vocab_tool').innerHTML = 
       "<p class='text-muted'>Unable to find <i\
-       style='font-weight: bold'>" +  word + "</i>.</p>";
+       style='font-weight: bold'>" +  word + "</i>. Perhaps check <a href='https://logeion.uchicago.edu/" +
+        word + "'>Logeion</a>.</p>";
   } else {
     document.getElementById('vocab_tool').innerHTML = main.innerHTML;
   }
