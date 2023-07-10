@@ -1,14 +1,19 @@
-function get_today_yyyymmddd()
-{
-  var today = new Date();
-  var mm = today.getMonth() + 1; // 0-indexed
-  var dd = today.getDate();
-  return [today.getFullYear(),
-      (mm > 9 ? '' : '0') + mm,
-      (dd > 9 ? '' : '0') + dd
-      ].join('');
-}
+// function get_today_yyyymmddd()
+// {
+//   var today = new Date();
+//   var mm = today.getMonth() + 1; // 0-indexed
+//   var dd = today.getDate();
+//   return [today.getFullYear(),
+//       (mm > 9 ? '' : '0') + mm,
+//       (dd > 9 ? '' : '0') + dd
+//       ].join('');
+// }
 
+
+/*******************************\
+ Converts NABRE book name to 
+ Vulgate name
+/*******************************/
 function latinize_name(name)
 {
   switch (name)
@@ -273,11 +278,15 @@ async function update_vocab_tool(word, translation) {
       break;
     }
     x.get(t).innerHTML += '&nbsp&nbsp';
-
   }
 
-  document.getElementById('vocab_tool').innerHTML = main.innerHTML;
-
+  if (strip(main.innerHTML).length == 0) {
+    document.getElementById('vocab_tool').innerHTML = 
+      "<p class='text-muted'>Unable to find <i\
+       style='font-weight: bold'>" +  word + "</i>.</p>";
+  } else {
+    document.getElementById('vocab_tool').innerHTML = main.innerHTML;
+  }
 }
 
 
@@ -289,7 +298,7 @@ TODO - cache data and date,
 $(document).ready(function(){
 
 
-  var today_yyyymmdd = get_today_yyyymmddd();
+  // var today_yyyymmdd = get_today_yyyymmddd();
   // var url = "http://cors-anywhere.herokuapp.com/https://www.universalis.com/jsonpmass.js"
   var url = "https://fathomless-sea-40559-e91b1364e20c.herokuapp.com/https://www.universalis.com/jsonpmass.js"
 
