@@ -1,13 +1,13 @@
-// function get_today_yyyymmddd()
-// {
-//   var today = new Date();
-//   var mm = today.getMonth() + 1; // 0-indexed
-//   var dd = today.getDate();
-//   return [today.getFullYear(),
-//       (mm > 9 ? '' : '0') + mm,
-//       (dd > 9 ? '' : '0') + dd
-//       ].join('');
-// }
+function get_today_yyyymmddd()
+{
+  var today = new Date();
+  var mm = today.getMonth() + 1; // 0-indexed
+  var dd = today.getDate();
+  return [today.getFullYear(),
+      (mm > 9 ? '' : '0') + mm,
+      (dd > 9 ? '' : '0') + dd
+      ].join('');
+}
 
 
 /*******************************\
@@ -298,9 +298,11 @@ TODO - cache data and date,
 $(document).ready(function(){
 
 
-  // var today_yyyymmdd = get_today_yyyymmddd();
+  var today_yyyymmdd = get_today_yyyymmddd();
   // var url = "http://cors-anywhere.herokuapp.com/https://www.universalis.com/jsonpmass.js"
-  var url = "https://fathomless-sea-40559-e91b1364e20c.herokuapp.com/https://www.universalis.com/jsonpmass.js"
+  // var url = "https://fathomless-sea-40559-e91b1364e20c.herokuapp.com/https://www.universalis.com/jsonpmass.js"
+  var url = "https://fathomless-sea-40559-e91b1364e20c.herokuapp.com/https://www.universalis.com/" +
+    today_yyyymmdd + "/jsonpmass.js";
 
   fetch(url)
    .then(response => response.text())
@@ -309,7 +311,7 @@ $(document).ready(function(){
        raw = raw.substring(raw.indexOf('(') + 1, raw.lastIndexOf(')'));
        raw = JSON.parse(raw);
        var date = raw['date'];
-
+       document.getElementById('blurb').innerHTML += ' <br><br><i>Readings for ' + date + '</i>';
        // init to non-null
        document.getElementById("first_reading_body").innerHTML = '';
        document.getElementById("second_reading_body").innerHTML = '';
