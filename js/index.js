@@ -304,7 +304,7 @@ $(document).ready(function(){
   var today_yyyymmdd = get_today_yyyymmddd();
   // var url = "http://cors-anywhere.herokuapp.com/https://www.universalis.com/jsonpmass.js"
   // var url = "https://fathomless-sea-40559-e91b1364e20c.herokuapp.com/https://www.universalis.com/jsonpmass.js"
-  var url = "https://fathomless-sea-40559-e91b1364e20c.herokuapp.com/https://www.universalis.com/" +
+  var url = "https://cors-anywhere-88cx.onrender.com/https://www.universalis.com/" +
     today_yyyymmdd + "/jsonpmass.js";
 
   fetch(url)
