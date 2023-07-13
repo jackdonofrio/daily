@@ -214,6 +214,7 @@ function generate_reading(reading_id, source, translation)
   var end_verse;
   var dash_index;
   var reading = '';
+  var word_index = 0;
 
   var result = '';
 
@@ -242,13 +243,15 @@ function generate_reading(reading_id, source, translation)
       var text = bible_json[book_name][chapter][v];
       text = text.replace(/[\p{L}\p{S}\p{M}]+/gu,
         function(a, b){
-          return '<div class="' + translation + '_word" onclick="update_vocab_tool(\'' 
-            + a + '\', ' + '\'' + translation + '\'' +
+          return '<div tabindex="0" id="' + reading_id + translation + word_index + '" role="button" class="' + translation + '_word"' + 
+          ' data-toggle="popover" data-html="true" data-trigger="focus" data-placement="bottom" title="Vocabulary Tool" data-content="Loading..."'
+          +
+          ' onclick="update_vocab_tool(\'' 
+            + a + '\', ' + '\'' + translation + '\', ' + '\'' + reading_id + translation + (word_index++) + '\'' +
             ')" >' + a + '</div>';
         });
       
       result += ' <b>' + v + '</b> ' + text;
-
     } 
   }
   var element = 'first_reading_body';
@@ -260,37 +263,57 @@ function generate_reading(reading_id, source, translation)
 
 
 
-async function update_vocab_tool(word, translation) {
+async function update_vocab_tool(word, translation, word_id) {
   var lang = translation == 'vul' ? 'la' : 'greek';
-  var url = "https://www.perseus.tufts.edu/hopper/morph";
-  url += '?l=' + word.toLowerCase();
-  url += '&la=' + lang;
-  var result = await fetch(url)
-    .then(response => response.text());
-  result = result.replace(/<img.*>/g, "");
-  var main = $(result).find('#main_col').get(0);
-  $(main).find('p').remove();
+  var site_url = "https://www.perseus.tufts.edu/hopper/morph";
+  site_url += '?l=' + word.toLowerCase();
+  site_url += '&la=' + lang;
 
-  var x = $(main).find('td.' + lang);
+  $.ajax({
+    url: site_url,
+    type: 'GET',
+    success: function(response) {
+      response = response.replace(/<img.*>/g, "");
+      var main = $(response).find('#main_col').get(0);
+      $(main).find('p').remove();
+      var x = $(main).find('td.' + lang);
 
-  for (var t in x) {
-    if (!isInt(t)) {
-      break;
+      for (var t in x) {
+        if (!isInt(t)) {
+          break;
+        }
+        x.get(t).innerHTML += '&nbsp&nbsp';
+      }
+
+      if (strip(main.innerHTML).length == 0) {
+        document.getElementById(word_id).setAttribute("data-content" ,
+          "<p class='text-muted'>Unable to find <i\
+           style='font-weight: bold'>" + word + "</i>. Perhaps check <a href='https://logeion.uchicago.edu/" +
+            word + "' target='_blank' rel='noopener noreferrer '>Logeion</a>.</p>");
+      } else {
+        document.getElementById(word_id).setAttribute("data-content", main.innerHTML + 
+          "<a href='https://logeion.uchicago.edu/" +
+            word + "' target='_blank' rel='noopener noreferrer'>Logeion entry</a>");
+      }
+
+      $('[id="' + word_id + '"]').popover('show', {
+        html: true,
+        title: function () {
+            return $(this).parent().find('.head').html();
+        },
+        content: function () {
+            return $(this).parent().find('.content').html();
+        }, 
+        delay: { "show": 250, "hide": 100 }
+      }); 
+    },
+    error: function(error) {
+      console.log(error);
     }
-    x.get(t).innerHTML += '&nbsp&nbsp';
-  }
-
-  if (strip(main.innerHTML).length == 0) {
-    document.getElementById('vocab_tool').innerHTML = 
-      "<p class='text-muted'>Unable to find <i\
-       style='font-weight: bold'>" + word + "</i>. Perhaps check <a href='https://logeion.uchicago.edu/" +
-        word + "' target='_blank' rel='noopener noreferrer '>Logeion</a>.</p>";
-  } else {
-    document.getElementById('vocab_tool').innerHTML = main.innerHTML + 
-      "<a href='https://logeion.uchicago.edu/" +
-        word + "' target='_blank' rel='noopener noreferrer'>Logeion entry</a>";
-  }
+  });
 }
+
+
 
 
 /*****************************************\
@@ -302,8 +325,6 @@ $(document).ready(function(){
 
 
   var today_yyyymmdd = get_today_yyyymmddd();
-  // var url = "http://cors-anywhere.herokuapp.com/https://www.universalis.com/jsonpmass.js"
-  // var url = "https://fathomless-sea-40559-e91b1364e20c.herokuapp.com/https://www.universalis.com/jsonpmass.js"
   var url = "https://cors-anywhere-88cx.onrender.com/https://www.universalis.com/" +
     today_yyyymmdd + "/jsonpmass.js";
 
