@@ -248,8 +248,11 @@ function generate_reading(reading_id, source, translation)
           +
           ' onclick="update_vocab_tool(\'' 
             + a + '\', ' + '\'' + translation + '\', ' + '\'' + reading_id + translation + (word_index++) + '\'' +
-            ')" >' + a + '</a>';
+            ')" >' + a + ' </a>';
         });
+      text = text.replace(/( )[^A-z]/gu, function(a, b){
+        return a;
+      })
       
       result += ' <b>' + v + '</b> ' + text;
     } 
