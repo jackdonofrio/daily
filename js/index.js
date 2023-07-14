@@ -253,7 +253,13 @@ function generate_reading(reading_id, source, translation)
       text = text.replace(/( )[^A-z]/gu, function(a, b){
         return a;
       })
-      
+
+      // this lets the dictionary find the word, but doesn't change the text
+      // since I like having the J's
+      text = text.replace("j", "i").replace('J', 'I').replace('æ', 'ae')
+        .replace('Æ', 'AE').replace('ë', 'e');
+
+
       result += ' <b>' + v + '</b> ' + text;
     } 
   }
