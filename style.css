@@ -25,21 +25,29 @@ p {
 }
 */
 
-.vul_word {
-  display:inline;
 
+
+a:active, a:focus, .vul_word, .grk_word {
+  text-decoration: none !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  outline: none;
+  color:inherit;
 }
+
+/*.vul_word {
+  text-decoration: none !important;
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+  outline: none;
+
+}*/
 
 .vul_word:hover {
   color: red;
   cursor: pointer;
 }
 
-
-
-.grk_word {
-  display:inline;
-}
 
 .grk_word:hover {
   color: blue;

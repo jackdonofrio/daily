@@ -243,12 +243,12 @@ function generate_reading(reading_id, source, translation)
       var text = bible_json[book_name][chapter][v];
       text = text.replace(/[\p{L}\p{S}\p{M}]+/gu,
         function(a, b){
-          return '<div tabindex="0" id="' + reading_id + translation + word_index + '" role="button" class="' + translation + '_word"' + 
+          return '<a tabindex="0" id="' + reading_id + translation + word_index + '" role="button" class="' + translation + '_word"' + 
           ' data-toggle="popover" data-html="true" data-trigger="focus" data-placement="bottom" title="Vocabulary Tool" data-content="Loading..."'
           +
           ' onclick="update_vocab_tool(\'' 
             + a + '\', ' + '\'' + translation + '\', ' + '\'' + reading_id + translation + (word_index++) + '\'' +
-            ')" >' + a + '</div>';
+            ')" >' + a + '</a>';
         });
       
       result += ' <b>' + v + '</b> ' + text;
