@@ -2,7 +2,7 @@ function get_today_yyyymmddd()
 {
   var today = new Date();
   var mm = today.getMonth() + 1; // 0-indexed
-  var dd = today.getDate() - 1;
+  var dd = today.getDate();
   return [today.getFullYear(),
       (mm > 9 ? '' : '0') + mm,
       (dd > 9 ? '' : '0') + dd
