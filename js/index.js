@@ -2,7 +2,7 @@ function get_today_yyyymmddd()
 {
   var today = new Date();
   var mm = today.getMonth() + 1; // 0-indexed
-  var dd = today.getDate();
+  var dd = today.getDate() - 1;
   return [today.getFullYear(),
       (mm > 9 ? '' : '0') + mm,
       (dd > 9 ? '' : '0') + dd
@@ -206,62 +206,83 @@ function generate_reading(reading_id, source, translation)
 
   var verse_numbers = book_verses[1];
   // get first chapter, in case need to supply it
-  var chapter = extract_chapter(verse_numbers); 
-  if (reading_id == 'Ps') {
-    chapter = (parseInt(chapter) + 1) + '';
-  }
+  var start_chapter = extract_chapter(verse_numbers); 
   var start_verse;
   var end_verse;
   var dash_index;
   var reading = '';
   var word_index = 0;
-
   var result = '';
+  if (reading_id == 'Ps') {
+    start_chapter = (parseInt(start_chapter) + 1) + '';
+    if (!isNaN(verse_numbers)) {
+      start_verse = '1';
+      var a = Object.keys(bible_json[book_name][verse_numbers]).map(function(e) {
+        return parseInt(e);
+      });
+      end_verse = a.length;
+      verse_numbers += ':' + start_verse + '-' + end_verse;
+    }
+  }
+  var end_chapter = start_chapter;
 
   for (range of verse_numbers.split(','))
   {
     var colon_index = range.indexOf(':');
     if (colon_index != -1) {
-      chapter = range.substring(0, colon_index);
+      start_chapter = range.substring(0, colon_index);
       if (reading_id == 'Ps') {
-        chapter = (parseInt(chapter) + 1) + '';
+        start_chapter = (parseInt(start_chapter) + 1) + '';
+        end_chapter = start_chapter;
       }
       range = range.substring(colon_index + 1);
     }
     dash_index = range.indexOf('-');
     if (dash_index != -1) {
       start_verse = strip(range.substring(0, dash_index));
-      end_verse = strip(range.substring(dash_index + 1));
+      // check for new chapter on right side of dash
+      colon_index = range.indexOf(':');
+      if (colon_index != -1) {
+        end_chapter = strip(range.substring(dash_index + 1, colon_index));
+        end_verse = strip(range.substring(colon_index + 1));
+      } else {
+        end_verse = strip(range.substring(dash_index + 1));
+      }
+      
     } else {
       start_verse = strip(range);
       end_verse = start_verse;
     }
-    for (var v = parseInt(start_verse); v <= parseInt(end_verse); v++) {
-      if (!(v in bible_json[book_name][chapter])) {
-        continue;
-      }
-      var text = bible_json[book_name][chapter][v];
-      text = text.replace(/[\p{L}\p{S}\p{M}]+/gu,
-        function(a, b){
-          return '<a tabindex="0" id="' + reading_id + translation + word_index + '" role="button" class="' + translation + '_word"' + 
-          ' data-toggle="popover" data-html="true" data-trigger="focus" data-placement="bottom" title="Vocabulary Tool" data-content="Loading..."'
-          +
-          ' onclick="update_vocab_tool(\'' 
-            + a + '\', ' + '\'' + translation + '\', ' + '\'' + reading_id + translation + (word_index++) + '\'' +
-            ')" >' + a + ' </a>';
-        });
-      text = text.replace(/( )[^A-z]/gu, function(a, b){
-        return a;
-      })
+    console.log(start_verse, end_verse, start_chapter, end_chapter)
+    for (var c = parseInt(start_chapter); c <= parseInt(end_chapter); c++, start_verse = '1') {
+      for (var v = parseInt(start_verse); (v <= parseInt(end_verse)) || 
+        (c < end_chapter && v in bible_json[book_name][c]); v++) {
+        if (!(v in bible_json[book_name][c])) {
+          continue;
+        }
+        var text = bible_json[book_name][c][v];
+        text = text.replace(/[\p{L}\p{S}\p{M}]+/gu,
+          function(a, b){
+            return '<a tabindex="0" id="' + reading_id + translation + word_index + '" role="button" class="' + translation + '_word"' + 
+            ' data-toggle="popover" data-html="true" data-trigger="focus" data-placement="bottom" title="Vocabulary Tool" data-content="Loading..."'
+            +
+            ' onclick="update_vocab_tool(\'' 
+              + a + '\', ' + '\'' + translation + '\', ' + '\'' + reading_id + translation + (word_index++) + '\'' +
+              ')" >' + a + ' </a>';
+          });
+        text = text.replace(/( )[^A-z]/gu, function(a, b){
+          return a;
+        })
 
-      // this lets the dictionary find the word, but doesn't change the text
-      // since I like having the J's
-      text = text.replace("j", "i").replace('J', 'I').replace('æ', 'ae')
-        .replace('Æ', 'AE').replace('ë', 'e');
+        // this lets the dictionary find the word, but doesn't change the text
+        // since I like having the J's
+        text = text.replace("j", "i").replace('J', 'I').replace('æ', 'ae')
+          .replace('Æ', 'AE').replace('ë', 'e');
 
 
-      result += ' <b>' + v + '</b> ' + text;
-    } 
+        result += ' <b>' + v + '</b> ' + text;
+      } 
+    }
   }
   var element = 'first_reading_body';
   if (reading_id == 'G') element = 'gospel_body';
