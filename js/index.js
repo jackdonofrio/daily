@@ -127,6 +127,45 @@ function latinize_name(name)
   }
 }
 
+function between_inc(value, low, hi)
+{
+  return value >= low && value <= hi;
+}
+
+/*
+still does not cover every single case since
+verses get cut up in some splits..
+
+neo vulgate / nabre numberings -> vulgate numbers
+
+TODO - change func from converting chapter
+to convert entire verse nums, will make it 
+actually work
+*/
+function convert_psalm(chapter)
+{
+  if (between_inc(chapter, 1, 8) || between_inc(chapter, 148, 150)) {
+    return chapter;
+  }
+  if (between_inc(chapter, 11, 113)) {
+    return chapter - 1;
+  }
+  if (between_inc(chapter, 114, 115)) {
+    return 113;
+  }
+  if (between_inc(chapter, 9, 10)) {
+    // not fully right still
+    return 9;
+  }
+  if (chapter == 116) {
+    // TODO
+    return 114; // AND 115
+  }
+  if (chapter == 147) {
+    // TODO
+    return 146; // AND 147;
+  }
+}
 
 
 /***************************\
@@ -214,7 +253,7 @@ function generate_reading(reading_id, source, translation)
   var word_index = 0;
   var result = '';
   if (reading_id == 'Ps') {
-    start_chapter = (parseInt(start_chapter) + 1) + '';
+    start_chapter = convert_psalm(parseInt(start_chapter)) + '';
     if (!isNaN(verse_numbers)) {
       start_verse = '1';
       var a = Object.keys(bible_json[book_name][verse_numbers]).map(function(e) {
@@ -232,7 +271,7 @@ function generate_reading(reading_id, source, translation)
     if (colon_index != -1) {
       start_chapter = range.substring(0, colon_index);
       if (reading_id == 'Ps') {
-        start_chapter = (parseInt(start_chapter) + 1) + '';
+        start_chapter = convert_psalm(parseInt(start_chapter)) + '';
         end_chapter = start_chapter;
       }
       range = range.substring(colon_index + 1);
@@ -253,7 +292,6 @@ function generate_reading(reading_id, source, translation)
       start_verse = strip(range);
       end_verse = start_verse;
     }
-    console.log(start_verse, end_verse, start_chapter, end_chapter)
     for (var c = parseInt(start_chapter); c <= parseInt(end_chapter); c++, start_verse = '1') {
       for (var v = parseInt(start_verse); (v <= parseInt(end_verse)) || 
         (c < end_chapter && v in bible_json[book_name][c]); v++) {
