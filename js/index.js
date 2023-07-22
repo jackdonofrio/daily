@@ -167,13 +167,20 @@ function convert_psalm(chapter)
   }
 }
 
+function generate_septuagint()
+{
+  for (a in greek) {
+    console.log(a)
+  }
+}
+
 
 /***************************\
  cleans ends of string
 /***************************/
 function strip(string)
 {
-  return string.replace(/\s/g, '');
+  return string.trim();
 }
 
 function isInt(value) {
@@ -254,14 +261,14 @@ function generate_reading(reading_id, source, translation)
   var result = '';
   if (reading_id == 'Ps') {
     start_chapter = convert_psalm(parseInt(start_chapter)) + '';
-    if (!isNaN(verse_numbers)) {
-      start_verse = '1';
-      var a = Object.keys(bible_json[book_name][verse_numbers]).map(function(e) {
-        return parseInt(e);
-      });
-      end_verse = a.length;
-      verse_numbers += ':' + start_verse + '-' + end_verse;
-    }
+  }
+  if (!isNaN(verse_numbers)) {
+    start_verse = '1';
+    var a = Object.keys(bible_json[book_name][verse_numbers]).map(function(e) {
+      return parseInt(e);
+    });
+    end_verse = a.length;
+    verse_numbers += ':' + start_verse + '-' + end_verse;
   }
   var end_chapter = start_chapter;
 
@@ -391,6 +398,7 @@ TODO - cache data and date,
 /*****************************************/
 $(document).ready(function(){
 
+  // generate_septuagint()
 
   var today_yyyymmdd = get_today_yyyymmddd();
   var url = "https://cors-anywhere-88cx.onrender.com/https://www.universalis.com/" +
