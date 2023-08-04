@@ -27,21 +27,13 @@ p {
 
 
 
-a:active, a:focus, .vul_word, .grk_word {
+.vul_word, .grk_word {
   text-decoration: none !important;
   -webkit-box-shadow: none !important;
   box-shadow: none !important;
   outline: none;
   color:inherit;
 }
-
-/*.vul_word {
-  text-decoration: none !important;
-  -webkit-box-shadow: none !important;
-  box-shadow: none !important;
-  outline: none;
-
-}*/
 
 .vul_word:hover {
   color: red;

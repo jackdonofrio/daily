@@ -308,21 +308,23 @@ function generate_reading(reading_id, source, translation)
         var text = bible_json[book_name][c][v];
         text = text.replace(/[\p{L}\p{S}\p{M}]+/gu,
           function(a, b){
-            return '<a tabindex="0" id="' + reading_id + translation + word_index + '" role="button" class="' + translation + '_word"' + 
+            return '<span tabindex="0" id="' + reading_id + translation + word_index + '" role="button" class="' + translation + '_word"' + 
             ' data-toggle="popover" data-html="true" data-trigger="focus" data-placement="bottom" title="Vocabulary Tool" data-content="Loading..."'
             +
             ' onclick="update_vocab_tool(\'' 
               + a + '\', ' + '\'' + translation + '\', ' + '\'' + reading_id + translation + (word_index++) + '\'' +
-              ')" >' + a + ' </a>';
+              ')" >' + a + ' </span>';
           });
-        text = text.replace(/( )[^A-z]/gu, function(a, b){
-          return a;
+        // console.log(text);
+        text = text.replace(/ <\/span> *[:;,\.'\?!]/gu, function(a, b){
+          return "<\/span>" + a.substring(a.length - 1);
         })
 
         // this lets the dictionary find the word, but doesn't change the text
         // since I like having the J's
         text = text.replace("j", "i").replace('J', 'I').replace('æ', 'ae')
           .replace('Æ', 'AE').replace('ë', 'e');
+
 
 
         result += ' <b>' + v + '</b> ' + text;
