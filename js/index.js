@@ -427,6 +427,7 @@ $(document).ready(function(){
        // TODO - may have to clean Ps sources
         // here's what you do - delete parenthetical number - then add 1 to chapter
        var psalm_src = raw['Mass_Ps']['source'];
+
        document.getElementById("psalm_header").innerHTML += 
         "<i>" + psalm_src + "</i>";
 
@@ -451,6 +452,8 @@ $(document).ready(function(){
         console.log("could not generate septuagint for", first_reading_src);
        }
        generate_reading('Ps', psalm_src, 'vul');
+       document.getElementById("psalm_body").innerHTML += '<hr>';
+       generate_reading('Ps', psalm_src.replace('Psalm ', 'Psalms '), 'grk');
        generate_reading('G', gospel_src, 'vul');
        document.getElementById("gospel_body").innerHTML += '<hr>';
        generate_reading('G', gospel_src, 'grk');
