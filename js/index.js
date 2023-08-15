@@ -37,6 +37,7 @@ function latinize_name(name)
     case "Nahum":
     case "Ruth":
       return name;
+    case "Apocalypse":
     case "Revelation":
       return "Apocalypsis";    
     case "Song of Songs":
