@@ -232,6 +232,7 @@ function generate_reading(reading_id, source, translation)
   // the issue is that the vulgate numbers them differently
   // than the NABRE and the differences are only consistent
   // within certain ranges
+  source = source.replace("&#x2010;", "-");
 
   if (reading_id == 'Ps')
   {
