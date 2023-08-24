@@ -233,7 +233,6 @@ function generate_reading(reading_id, source, translation)
   // than the NABRE and the differences are only consistent
   // within certain ranges
   source = source.replace("&#x2010;", "-");
-
   if (reading_id == 'Ps')
   {
     source = source.substring(0, source.indexOf('('))
@@ -241,6 +240,9 @@ function generate_reading(reading_id, source, translation)
   }
   var book_verses = extract_book_verses(source);
   var book_name = book_verses[0];
+  book_verses[1] = book_verses[1].replace(/[abc]/, "")
+    .replace("&#x2010;", "-");
+  console.log(book_verses[1])
   var bible_json;
   if (translation == 'vul') {
     bible_json = vulgate;
@@ -253,6 +255,7 @@ function generate_reading(reading_id, source, translation)
   }
 
   var verse_numbers = book_verses[1];
+  // console.log(verse_numbers)
   // get first chapter, in case need to supply it
   var start_chapter = extract_chapter(verse_numbers); 
   var start_verse;
