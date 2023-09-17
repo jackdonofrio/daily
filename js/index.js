@@ -45,6 +45,7 @@ function latinize_name(name)
     case "Deuteronomy":
       return "Deuteronomium";
     case "Sirach":
+    case "Ecclesiasticus":
       return "Ecclesiasticus";
     case "Ezra":
       return "Esdrae";
@@ -123,7 +124,7 @@ function latinize_name(name)
     case "2 Timothy": return "ad Timotheum II";
     case "Titus": return "ad Titum";
     default:
-      console.log("error: unrecognized book title.");
+      console.log("error: unrecognized book title", name);
       return "";
   }
 }
@@ -258,6 +259,7 @@ function generate_reading(reading_id, source, translation)
   // console.log(verse_numbers)
   // get first chapter, in case need to supply it
   var start_chapter = extract_chapter(verse_numbers); 
+  
   var start_verse;
   var end_verse;
   var dash_index;
