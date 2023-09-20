@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/128/1511/1511384.png">
+    <link rel="canonical" href="https://getbootstrap.com/docs/3.3/examples/blog/">
+
+    <title>Jerome Scripture Reader</title>
+
+    <!-- jq -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+  <!-- custom template styles -->
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+	<!-- Latest compiled and minified JavaScript -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+  </head>
+
+  <body>
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <h1>Jerome Scripture Reader <a class="github-button" href="https://github.com/jackdonofrio/jerome" data-color-scheme="no-preference: dark; light: light; dark: dark;" data-show-count="true" aria-label="Star jackdonofrio/jerome on GitHub">Star</a></h1>
+
+          <p class="text-muted" id="blurb">Practice your Greek (LXX and NT) and Latin (Vulgate). For vocabulary help, simply click on a word. </p>
+          <hr>
+          <p id="book_titles"></p>
+          <div class="col-md-8">
+            <h3 id="text_header"></h3>
+            <p id="chapter_nums"></p>
+            <a id="alt_lang" href=""></a>
+            <p id="text_body"></p>
+          </div>
+	     </div>
+	    </div>
+    </main>
+
+
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/vul.json"></script>
+    <script src="js/grb.json"></script>
+    <script src="js/main.js"></script>
+    <script src="js/bible.js"></script>
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+  </body>
+</html>
