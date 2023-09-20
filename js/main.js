@@ -41,6 +41,7 @@ function latinize_name(name)
     case "Revelation":
       return "Apocalypsis";    
     case "Song of Songs":
+    case "Song of Solomon":
       return "Canticum Canticorum";    
     case "Deuteronomy":
       return "Deuteronomium";
@@ -106,7 +107,9 @@ function latinize_name(name)
     case "2 Samuel": return "Regum II";
     case "1 Kings": return "Regum III";
     case "2 Kings": return "Regum IV";
-    case "Wisdom": return "Sapientia";
+    case "Wisdom": 
+    case "Wisdom of Solomon":
+      return "Sapientia";
     case "Zephaniah": return "Sophonias";
     case "Tobit": return "Tobiae";
     case "Zechariah": return "Zacharias";
