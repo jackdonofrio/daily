@@ -120,6 +120,7 @@ function latinize_name(name)
     case "Galatians": return "ad Galatas";
     case "Hebrews": return "ad Hebraeos";
     case "Philemon": return "ad Philemonem";
+    case "Philippians": return "ad Philippenses"; 
     case "Romans": return "ad Romanos";
     case "1 Thessalonians": return "ad Thessalonicenses I";
     case "2 Thessalonians": return "ad Thessalonicenses II";
