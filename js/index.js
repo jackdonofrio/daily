@@ -1,3 +1,21 @@
+function get_cal_data()
+{
+  document.getElementById("celebrations").innerHTML = "";
+  var url = "http://calapi.inadiutorium.cz/api/v0/en/calendars/default/today";
+  fetch(url)
+    .then(response => response.text())
+    .then((response) => {
+       var raw = response;
+       var cal_dict = JSON.parse(raw);
+       for (var celebration in cal_dict['celebrations']) {
+        var title = cal_dict['celebrations'][celebration]['title'];
+        var color = cal_dict['celebrations'][celebration]['colour'];
+        var tab = "<p style='color: " + color  + "'>" + title + "</p>";
+        document.getElementById("celebrations").innerHTML += tab;
+       }
+   })
+   .catch(err => console.log(err))
+}
 
 
 function generate_reading(reading_id, source, translation)
@@ -17,7 +35,6 @@ function generate_reading(reading_id, source, translation)
   var book_name = book_verses[0];
   book_verses[1] = book_verses[1].replace(/[abc]/, "")
     .replace("&#x2010;", "-");
-  console.log(book_verses[1])
   var bible_json;
   if (translation == 'vul') {
     bible_json = vulgate;
@@ -128,9 +145,12 @@ TODO - cache data and date,
 /*****************************************/
 $(document).ready(function(){
 
+
   var today_yyyymmdd = get_today_yyyymmddd();
   var url = "https://cors-anywhere-88cx.onrender.com/https://www.universalis.com/" +
     today_yyyymmdd + "/jsonpmass.js";
+
+  get_cal_data()
 
   fetch(url)
    .then(response => response.text())
@@ -139,7 +159,7 @@ $(document).ready(function(){
        raw = raw.substring(raw.indexOf('(') + 1, raw.lastIndexOf(')'));
        raw = JSON.parse(raw);
        var date = raw['date'];
-       document.getElementById('blurb').innerHTML += ' <br><br><i>Readings for ' + date + '</i>';
+       // document.getElementById('blurb').innerHTML += ' <br><br><i>Readings for ' + date + '</i>';
        // init to non-null
        document.getElementById("first_reading_body").innerHTML = '';
        document.getElementById("second_reading_body").innerHTML = '';
