@@ -1,7 +1,8 @@
 function get_cal_data()
 {
   document.getElementById("celebrations").innerHTML = "";
-  var url = "http://calapi.inadiutorium.cz/api/v0/en/calendars/default/today";
+  // var url = "http://calapi.inadiutorium.cz/api/v0/en/calendars/default/today";
+  var url = "https://cors-anywhere-88cx.onrender.com/http://calapi.inadiutorium.cz/api/v0/en/calendars/default/today";
   fetch(url)
     .then(response => response.text())
     .then((response) => {
