@@ -1,7 +1,6 @@
 function get_cal_data()
 {
   document.getElementById("celebrations").innerHTML = "";
-  // var url = "http://calapi.inadiutorium.cz/api/v0/en/calendars/default/today";
   var url = "https://cors-anywhere-88cx.onrender.com/http://calapi.inadiutorium.cz/api/v0/en/calendars/default/today";
   fetch(url)
     .then(response => response.text())
@@ -11,6 +10,10 @@ function get_cal_data()
        for (var celebration in cal_dict['celebrations']) {
         var title = cal_dict['celebrations'][celebration]['title'];
         var color = cal_dict['celebrations'][celebration]['colour'];
+        if (color == 'white') {
+          color = 'black';
+          title += " (White)"; // very temporary fix..
+        }
         var tab = "<p style='color: " + color  + "'>" + title + "</p>";
         document.getElementById("celebrations").innerHTML += tab;
        }
