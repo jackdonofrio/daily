@@ -1,7 +1,16 @@
 function get_cal_data()
 {
   document.getElementById("celebrations").innerHTML = "";
-  var url = "https://cors-anywhere-88cx.onrender.com/http://calapi.inadiutorium.cz/api/v0/en/calendars/default/today";
+  
+
+  var today = new Date();
+  var mm = today.getMonth() + 1; // 0-indexed
+  var dd = today.getDate();
+
+  var url = "https://cors-anywhere-88cx.onrender.com/http://calapi.inadiutorium.cz" +
+   "/api/v0/en/calendars/default/" + today.getFullYear() + '/' + mm + '/' + dd;
+  
+
   fetch(url)
     .then(response => response.text())
     .then((response) => {
