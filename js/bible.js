@@ -1,4 +1,46 @@
 
+function has_greek(string)
+{
+  return Array(string).some((c) => c.charCodeAt() > 900);
+}
+
+
+function normalizePolytonicGreek(text) {
+    return text.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+}
+
+// brute force search - works because there isn't that much 
+// to look through (even though it seems so)
+function search(query)
+{
+  
+  var is_grk = has_greek(query);
+  if (is_grk) {
+    query = normalizePolytonicGreek(query);
+  }
+  query = query.toLowerCase();
+  
+
+  var bible_json = is_grk ? greek : vulgate;
+
+  var results = [];
+  for (var book in bible_json) {
+    for (var chapter in bible_json[book]) {
+      for (var verse in bible_json[book][chapter]) {
+        var verse_text = bible_json[book][chapter][verse];
+        var compare_text = (is_grk ? normalizePolytonicGreek(verse_text) : verse_text)
+          .toLowerCase();
+        if (compare_text.includes(query)) {
+          var res = [book, chapter, verse, verse_text];
+          results.push(res);
+        }
+      }
+    }
+  }
+  return results;
+}
+
+
 function generate_reading(reading_id, source, translation)
 {
   
@@ -173,12 +215,34 @@ function prep_header(current_book, current_translation)
   document.getElementById("chapter_nums").innerHTML = result_n;
 }
 
+
 /*****************************************\
 upon page load, update 
 TODO - cache data and date,
   only load if date is different
 /*****************************************/
 $(document).ready(function(){
+
+  $("#search_btn").click(function() {
+    var query = $("#query_text").val();
+    if (query.length < 3) {
+      console.log("no");
+      return;
+    }
+    var results = search(query);
+    var result_string = "";
+    for (var result of results) {
+      var book = result[0];
+      var chapter = result[1];
+      var verse_n = result[2];
+      var verse_text = result[3];
+      var entry = "<b>" + book + " " + chapter + ":" + verse_n + "</b> " + verse_text ;
+      result_string += entry + "<br>";
+    }
+
+    document.getElementById("query_results").innerHTML = result_string;
+  });
+
 
   document.getElementById("text_body").innerHTML = "";
   document.getElementById("text_header").innerHTML = "";
