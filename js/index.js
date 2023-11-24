@@ -3,11 +3,11 @@ function get_cal_data()
   document.getElementById("celebrations").innerHTML = "";
   
 
-  var today = new Date();
-  var mm = today.getMonth() + 1; // 0-indexed
-  var dd = today.getDate();
+  const today = new Date();
+  const mm = today.getMonth() + 1; // 0-indexed
+  const dd = today.getDate();
 
-  var url = "https://cors-anywhere-88cx.onrender.com/http://calapi.inadiutorium.cz" +
+  const url = "https://cors-anywhere-88cx.onrender.com/http://calapi.inadiutorium.cz" +
    "/api/v0/en/calendars/default/" + today.getFullYear() + '/' + mm + '/' + dd;
   
 
@@ -23,7 +23,7 @@ function get_cal_data()
           color = 'black';
           title += " (White)"; // very temporary fix..
         }
-        var tab = "<p style='color: " + color  + "'>" + title + "</p>";
+        let tab = `<p style='color: ${color}'>${title}</p>`;
         document.getElementById("celebrations").innerHTML += tab;
        }
    })
@@ -159,8 +159,8 @@ TODO - cache data and date,
 $(document).ready(function(){
 
 
-  var today_yyyymmdd = get_today_yyyymmddd();
-  var url = "https://cors-anywhere-88cx.onrender.com/https://www.universalis.com/" +
+  let today_yyyymmdd = get_today_yyyymmddd();
+  const url = "https://cors-anywhere-88cx.onrender.com/https://www.universalis.com/" +
     today_yyyymmdd + "/jsonpmass.js";
 
   get_cal_data()
@@ -172,7 +172,7 @@ $(document).ready(function(){
        raw = raw.substring(raw.indexOf('(') + 1, raw.lastIndexOf(')'));
        raw = JSON.parse(raw);
        var date = raw['date'];
-       // document.getElementById('blurb').innerHTML += ' <br><br><i>Readings for ' + date + '</i>';
+       document.getElementById('blurb').innerHTML += ' <br><br><i>Readings for ' + date + '</i>';
        // init to non-null
        document.getElementById("first_reading_body").innerHTML = '';
        document.getElementById("second_reading_body").innerHTML = '';
