@@ -171,6 +171,7 @@ function convert_psalm(chapter)
     // TODO
     return 146; // AND 147;
   }
+  return chapter;
 }
 
 function generate_septuagint()
