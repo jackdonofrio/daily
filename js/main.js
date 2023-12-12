@@ -36,6 +36,8 @@ function latinize_name(name)
     case "Leviticus":
     case "Nahum":
     case "Ruth":
+    case "Odes":
+    case "3 Maccabees": case "4 Maccabees":
       return name;
     case "Apocalypse":
     case "Revelation":
