@@ -200,15 +200,16 @@ function get_chapter_link(name, chapter_number, translation)
 
 function prep_header(current_book, current_translation)
 {
+  var bible_json = current_translation == 'grk' ? greek : vulgate;
   var result_t = "";
-  for (var book in greek) {
+  for (var book in bible_json) {
     result_t += "<a href=" + get_chapter_link(book, "1", current_translation) + ">" + book + "</a> ";
     if (!book.startsWith("Apoc")) {
       result_t += "~ ";
     }
   }
   var result_n = "";
-  for (var c_num in greek[current_book]) {
+  for (var c_num in bible_json[current_book]) {
     result_n += "<a href=" + get_chapter_link(current_book, c_num, current_translation) + ">" + c_num + "</a> ";
   }
   document.getElementById("book_titles").innerHTML = result_t;
