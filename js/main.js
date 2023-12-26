@@ -20,6 +20,7 @@ function latinize_name(name)
   {
     case "Obadiah":
       return "Abdias";
+	case "Acts":
     case "Acts of the Apostles":
       return "Actus Apostolorum";
     case "Haggai":
