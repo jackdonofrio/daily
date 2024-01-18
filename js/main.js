@@ -9,6 +9,44 @@ function get_today_yyyymmddd()
       ].join('');
 }
 
+function normalizePolytonicGreek(text) {
+    return text.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
+}
+
+
+function has_greek(string)
+{
+  return Array(string).some((c) => c.charCodeAt() > 900);
+}
+
+function search(query)
+{
+  
+  var is_grk = has_greek(query);
+  if (is_grk) {
+    query = normalizePolytonicGreek(query);
+  }
+  query = query.toLowerCase();
+  
+
+  var bible_json = is_grk ? greek : vulgate;
+
+  var results = [];
+  for (var book in bible_json) {
+    for (var chapter in bible_json[book]) {
+      for (var verse in bible_json[book][chapter]) {
+        var verse_text = bible_json[book][chapter][verse];
+        var compare_text = (is_grk ? normalizePolytonicGreek(verse_text) : verse_text)
+          .toLowerCase();
+        if (compare_text.includes(query)) {
+          var res = [book, chapter, verse, verse_text];
+          results.push(res);
+        }
+      }
+    }
+  }
+  return results;
+}
 
 /*******************************\
  Converts NABRE book name to 
@@ -256,16 +294,18 @@ async function update_vocab_tool(word, translation, word_id) {
         x.get(t).innerHTML += '&nbsp&nbsp';
       }
 
-      if (strip(main.innerHTML).length == 0) {
-        document.getElementById(word_id).setAttribute("data-content" ,
-          "<p class='text-muted'>Unable to find <i\
-           style='font-weight: bold'>" + word + "</i>. Perhaps check <a href='https://logeion.uchicago.edu/" +
-            word + "' target='_blank' rel='noopener noreferrer '>Logeion</a>.</p>");
-      } else {
-        document.getElementById(word_id).setAttribute("data-content", main.innerHTML + 
-          "<a href='https://logeion.uchicago.edu/" +
-            word + "' target='_blank' rel='noopener noreferrer'>Logeion entry</a>");
-      }
+      var empty = strip(main.innerHTML).length == 0;
+
+      main.innerHTML += "<a href='search.html?query=" + word 
+        + "'>See all occurrences of <b>" + word
+        + "</b></a><br><a href='https://logeion.uchicago.edu/" 
+        + word + "' target='_blank' rel='noopener noreferrer'>Logeion entry</a>";
+
+      if (empty) {
+        main.innerHTML = "<p class='text-muted'>Unable to find <i\
+           style='font-weight: bold'>" + word + "</i>.</p>" + main.innerHTML;
+      } 
+      document.getElementById(word_id).setAttribute("data-content", main.innerHTML);
 
       $('[id="' + word_id + '"]').popover('show', {
         html: true,

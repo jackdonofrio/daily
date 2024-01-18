@@ -1,13 +1,6 @@
 
-function has_greek(string)
-{
-  return Array(string).some((c) => c.charCodeAt() > 900);
-}
 
 
-function normalizePolytonicGreek(text) {
-    return text.normalize('NFD').replace(/[\u0300-\u036f]/g, "");
-}
 
 // brute force search - works because there isn't that much 
 // to look through (even though it seems so)
@@ -48,7 +41,6 @@ function generate_reading(reading_id, source, translation)
   
 
   var verse_numbers = book_verses[1];
-  // console.log(verse_numbers)
   // get first chapter, in case need to supply it
   var start_chapter = extract_chapter(verse_numbers); 
   
@@ -114,7 +106,6 @@ function generate_reading(reading_id, source, translation)
               + a + '\', ' + '\'' + translation + '\', ' + '\'' + reading_id + translation + (word_index++) + '\'' +
               ')" >' + a + ' </span>';
           });
-        // console.log(text);
         text = text.replace(/ <\/span> *[:;,\.'\?!]/gu, function(a, b){
           return "<\/span>" + a.substring(a.length - 1);
         })
@@ -209,7 +200,6 @@ function prep_header(current_book, current_translation)
   }
   var result_n = "";
   var book_chapters = current_translation == 'grk' ? greek[current_book] : vulgate[latinize_name(current_book)];
-  console.log(book_chapters)
   for (var c_num in book_chapters) {
     result_n += "<a href=" + get_chapter_link(current_book, c_num, current_translation) + ">" + c_num + "</a> ";
   }
@@ -225,6 +215,12 @@ TODO - cache data and date,
 /*****************************************/
 $(document).ready(function(){
 
+  $("#query_text").keyup(function(event) {
+    if (event.keyCode === 13) {
+        $("#search_btn").click();
+    }
+  });
+
   $("#search_btn").click(function() {
     var query = $("#query_text").val();
     if (query.length < 3) {
@@ -238,11 +234,26 @@ $(document).ready(function(){
       var chapter = result[1];
       var verse_n = result[2];
       var verse_text = result[3];
-      var entry = "<b>" + book + " " + chapter + ":" + verse_n + "</b> " + verse_text ;
+      var is_grk = has_greek(query);
+      if (is_grk) {
+        query = normalizePolytonicGreek(query);
+      }
+      var translation = is_grk ? 'grk' : 'vul';
+      var compare_text = (is_grk ? normalizePolytonicGreek(verse_text) : verse_text)
+          .toLowerCase();
+      var ind = compare_text.indexOf(query);
+      var to_replace = verse_text.substring(ind, ind + query.length);
+      verse_text = verse_text.replaceAll(to_replace, '<b>' + to_replace + '</b>');
+      var entry = "<b><a href=\"bible.html?book=" + encodeURIComponent(book) 
+        + "&chapter=" + chapter + "&translation="
+        +  translation + "\">" + book + " " + chapter + ":" 
+        + verse_n + "</a></b> " + verse_text;
+
       result_string += entry + "<br>";
     }
 
-    document.getElementById("query_results").innerHTML = result_string;
+    document.getElementById("query_results").innerHTML = 
+    '<h4>Results for <i><b>' + original_query + '</b></i></h4>' + result_string;
   });
 
 
