@@ -227,6 +227,7 @@ $(document).ready(function(){
       console.log("no");
       return;
     }
+    var original_query = query;
     var results = search(query);
     var result_string = "";
     for (var result of results) {
