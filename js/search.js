@@ -11,9 +11,8 @@ function do_query(query)
     var is_grk = has_greek(query);
     if (is_grk) {
       query = normalizePolytonicGreek(query);
-    } else {
-      query = query.toLowerCase();
-    }
+    } 
+    query = query.toLowerCase();
     var translation = is_grk ? 'grk' : 'vul';
     var compare_text = (is_grk ? normalizePolytonicGreek(verse_text) : verse_text)
         .toLowerCase();
