@@ -106,7 +106,7 @@ function generate_reading(reading_id, source, translation)
               + a + '\', ' + '\'' + translation + '\', ' + '\'' + reading_id + translation + (word_index++) + '\'' +
               ')" >' + a + ' </span>';
           });
-        text = text.replace(/ <\/span> *[:;,\.'\?!]/gu, function(a, b){
+        text = text.replace(/ <\/span> *[:;,\.'\?!<>]/gu, function(a, b){
           return "<\/span>" + a.substring(a.length - 1);
         })
 
@@ -277,10 +277,29 @@ $(document).ready(function(){
     translation = params.get('translation');
   }
 
-  prep_header(book, translation)
-  document.getElementById("alt_lang").innerHTML = "Read in " + (translation == 'vul' ? 'Greek' : 'Latin');
-  document.getElementById("alt_lang").setAttribute("href", get_chapter_link(book, 
-    chapter, (translation == 'vul' ? 'grk' : 'vul')));
+  prep_header(book, translation);
+
+  if (translation == 'vul') {
+    $('#latin_tab').addClass('active');
+    $('#greek_tab').removeClass('active');
+    $('#greek_version_link').attr("href", get_chapter_link(book, 
+    chapter, 'grk'));
+  } else {
+    $('#latin_tab').removeClass('active');
+    $('#greek_tab').addClass('active');
+    $('#latin_version_link').attr("href", get_chapter_link(book, 
+    chapter, 'vul'));
+  }
+
+  
+
+  
+
+
+  // document.getElementById("alt_lang").innerHTML = "Read in " + (translation == 'vul' ? 'Greek' : 'Latin');
+  // document.getElementById("alt_lang").setAttribute("href", get_chapter_link(book, 
+  //   chapter, (translation == 'vul' ? 'grk' : 'vul')));
+
   generate_chapter(book, chapter, translation);
  
   
