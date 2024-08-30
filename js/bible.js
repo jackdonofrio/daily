@@ -1,9 +1,4 @@
 
-
-
-
-// brute force search - works because there isn't that much 
-// to look through (even though it seems so)
 function search(query)
 {
   
@@ -37,9 +32,6 @@ function search(query)
 function generate_reading(reading_id, source, translation)
 {
   
-  
-  
-
   var verse_numbers = book_verses[1];
   // get first chapter, in case need to supply it
   var start_chapter = extract_chapter(verse_numbers); 
@@ -291,17 +283,7 @@ $(document).ready(function(){
     chapter, 'vul'));
   }
 
-  
-
-  
-
-
-  // document.getElementById("alt_lang").innerHTML = "Read in " + (translation == 'vul' ? 'Greek' : 'Latin');
-  // document.getElementById("alt_lang").setAttribute("href", get_chapter_link(book, 
-  //   chapter, (translation == 'vul' ? 'grk' : 'vul')));
-
   generate_chapter(book, chapter, translation);
  
-  
 
 });
