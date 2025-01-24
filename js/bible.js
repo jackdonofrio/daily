@@ -127,10 +127,15 @@ function generate_chapter(book_name, chapter_number, translation)
   var bible_json;
   if (translation == 'vul') {
     bible_json = vulgate;
-    book_name = latinize_name(book_name);
+    // book_name = latinize_name(book_name);
+    // TODO - temp disabling this
   } else if (translation == 'grk') {
     bible_json = greek;
-  } else {
+  } else if (translation == 'douay_rheims') {
+    bible_json = douay_rheims;
+  }
+
+  else {
     console.log('error, unrecognized translation', translation);
     return;
   }
@@ -191,7 +196,16 @@ function prep_header(current_book, current_translation)
     }
   }
   var result_n = "";
-  var book_chapters = current_translation == 'grk' ? greek[current_book] : vulgate[latinize_name(current_book)];
+  // var book_chapters = current_translation == 'grk' ? greek[current_book] : vulgate[latinize_name(current_book)];
+  var book_chapters;
+  if (current_translation == 'grk') {
+    book_chapters = greek[current_book];
+  } else if (current_translation == 'vul') {
+    book_chapters = vulgate[current_book]
+  } else if (current_translation == 'douay_rheims') {
+    book_chapters = douay_rheims[current_book];
+  }
+
   for (var c_num in book_chapters) {
     result_n += "<a href=" + get_chapter_link(current_book, c_num, current_translation) + ">" + c_num + "</a> ";
   }
@@ -271,14 +285,36 @@ $(document).ready(function(){
 
   prep_header(book, translation);
 
+
+  // todo - do this a better way
   if (translation == 'vul') {
     $('#latin_tab').addClass('active');
+
     $('#greek_tab').removeClass('active');
+    $('#douay_rheims_tab').removeClass('active');
+
     $('#greek_version_link').attr("href", get_chapter_link(book, 
     chapter, 'grk'));
-  } else {
-    $('#latin_tab').removeClass('active');
+    $('#douay_rheims_version_link').attr("href", get_chapter_link(book, 
+    chapter, 'douay_rheims'));
+  } else if (translation == 'grk') {
     $('#greek_tab').addClass('active');
+
+    $('#latin_tab').removeClass('active');
+    $('#douay_rheims_tab').removeClass('active');
+    
+    $('#latin_version_link').attr("href", get_chapter_link(book, 
+    chapter, 'vul'));
+    $('#douay_rheims_version_link').attr("href", get_chapter_link(book, 
+    chapter, 'douay_rheims'));
+  } else if (translation == 'douay_rheims') {
+    $('#douay_rheims_tab').addClass('active');
+
+    $('#greek_tab').removeClass('active');
+    $('#latin_tab').removeClass('active');
+
+    $('#greek_version_link').attr("href", get_chapter_link(book, 
+    chapter, 'grk'));
     $('#latin_version_link').attr("href", get_chapter_link(book, 
     chapter, 'vul'));
   }

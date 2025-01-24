@@ -51,7 +51,8 @@ function generate_reading(reading_id, source, translation)
   var bible_json;
   if (translation == 'vul') {
     bible_json = vulgate;
-    book_name = latinize_name(book_name);
+    // book_name = latinize_name(book_name);
+    // TODO temp disabling this
   } else if (translation == 'grk') {
     bible_json = greek;
   } else {
